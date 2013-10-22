@@ -1,3 +1,6 @@
+-- require some helpers
+local urlencode = require('urlencode')
+
 -- Assume for simplicity that our location is a regex capturing 2 values, for the 
 -- privilege and id.  In real life you might want to decouple this script 
 -- from your nginx configuration details by setting variables to the captured values
@@ -11,9 +14,12 @@ local privilege, resource_id = ngx.var[1], ngx.var[2]
 -- from this script by storing the location path in an nginx variable.
 local location = string.format(
   "/authz/sandbox/resources/ngx-demo-service/%s?check&privilege=%s",
-  resource_id, 
-  privilege
+  urlencode(resource_id), 
+  urlencode(privilege)
 )
+
+-- log the location we're going to request  
+ngx.log(ngx.NOTICE, "location=" .. location)
 
 -- This executes the request asynchronously in the sense that it doesn't block the 
 -- nginx event loop, but blocks the current request until it completes.
