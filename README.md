@@ -14,7 +14,21 @@ vagrant up
 vagrant provision
 ```
 
-The vagrant vm forwards requests to localhost:4567 to port 80 on the guest.
+The vagrant vm forwards requests to localhost:4567 to port 80 (nginx) on the guest, so 
+once it's provisioned you can check that nginx is up and running like this:
+
+```sh
+$ curl localhost:4567
+It works!
+```
+
+The sinatra service listens on 3535, which is also available from the host (a bad idea in 
+real life!) on port 5353:
+
+```sh
+$ curl localhost:5353/foo/bar
+Performed action 'foo' on 'bar'
+```
 
 How it works
 ------------
